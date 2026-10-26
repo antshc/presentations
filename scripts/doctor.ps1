@@ -98,8 +98,11 @@ try {
 
     $git = Get-Command git -ErrorAction SilentlyContinue
     if ($git) {
-        & git check-ignore --quiet '.draft/.ignore-probe'
-        Write-Check ($LASTEXITCODE -eq 0) '.draft/ is ignored by Git.'
+        & git check-ignore --quiet '.draft/probe/images/probe.png'
+        $assetsIgnored = ($LASTEXITCODE -eq 0)
+        & git check-ignore --quiet '.draft/probe/plan.md' '.draft/probe/diagrams/probe.drawio'
+        $trackedIgnored = ($LASTEXITCODE -eq 0)
+        Write-Check ($assetsIgnored -and -not $trackedIgnored) '.draft/ assets are ignored; plan.md and diagrams/*.drawio are tracked.'
     } else {
         Write-Check $false 'Git is unavailable; .draft ignore status could not be checked.' -Warning
     }

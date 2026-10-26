@@ -311,8 +311,13 @@ FakesAssemblies/
 .ntvs_analysis.dat
 node_modules/
 
-# Presentation working files (project-specific drafts and generated assets)
-.draft/
+# Presentation drafts: track only each project's plan.md and native .drawio diagrams;
+# ignore project assets (sources, images, video, references, exports, notes)
+.draft/*/*
+!.draft/*/plan.md
+!.draft/*/diagrams/
+.draft/*/diagrams/*
+!.draft/*/diagrams/*.drawio
 
 # Visual Studio 6 build log
 *.plg
