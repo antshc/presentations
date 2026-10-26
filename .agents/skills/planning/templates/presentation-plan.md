@@ -25,11 +25,11 @@ Each row is one slide unit made from two adjacent 16:9 screens. The left screen 
 
 ## Style decisions
 
-- Background: `<color or treatment>`
+- Theme: `<light | dark>`; all slides use only this theme's palette from `README.md` "Default visual profile"
 - Ink and typography: `<choices>`
-- Semantic colors: `<mapping>`
+- Color role mapping: `<which concept gets Accent 1–4, which stages use Stage 1–4>`
 - Illustration and connector style: `<choices>`
-- Project-specific overrides: `<differences from repository defaults>`
+- Project-specific overrides: `<non-color differences from repository defaults>`
 
 ## Open decisions
 

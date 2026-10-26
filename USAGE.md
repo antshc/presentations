@@ -2,17 +2,17 @@
 
 ## 1. Prepare the workspace
 
-Open PowerShell in `D:\_projects\presentations`:
+Open a terminal (bash or PowerShell) in the repository root:
 
-```powershell
-cd D:\_projects\presentations
-.\scripts\setup.ps1
-.\scripts\doctor.ps1
+```sh
+cd /path/to/presentations
+bun run setup
+bun run doctor
 ```
 
 Start Codex from the same directory so it can read the repository instructions and local skills:
 
-```powershell
+```sh
 codex
 ```
 
@@ -75,8 +75,8 @@ Expected locations:
 
 Open the native file:
 
-```powershell
-draw.io .draft\ai-development-evolution\diagrams\presentation.drawio
+```sh
+drawio .draft/ai-development-evolution/diagrams/presentation.drawio
 ```
 
 Request revisions against the native `.drawio` file, not an exported image:
@@ -91,15 +91,11 @@ increase whitespace. Preserve all stage colors and factual caveats.
 
 Export one file:
 
-```powershell
-.\scripts\export-drawio.ps1 `
-  -Input ".draft/ai-development-evolution/diagrams/presentation.drawio" `
-  -Format png `
-  -Output ".draft/ai-development-evolution/exports" `
-  -AllPages
+```sh
+bun run export --input .draft/ai-development-evolution/diagrams/presentation.drawio --format png
 ```
 
-Replace `png` with `svg` or `pdf` when needed. Exports are delivery artifacts; the `.drawio` file remains the editable source of truth.
+Replace `png` with `svg` or `pdf` when needed. Every page is exported unless `--page <n>` is given. Exports are delivery artifacts; the `.drawio` file remains the editable source of truth.
 
 ## 6. Final checks
 
@@ -115,8 +111,8 @@ Ask Codex to verify:
 
 Run the environment check again if generation or export fails:
 
-```powershell
-.\scripts\doctor.ps1
+```sh
+bun run doctor
 ```
 
 ## 7. Run a retrospective

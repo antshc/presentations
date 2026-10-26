@@ -8,8 +8,9 @@
     "bun": ">=1.1"
   },
   "scripts": {
-    "setup": "pwsh -NoProfile -File ./scripts/setup.ps1",
-    "doctor": "pwsh -NoProfile -File ./scripts/doctor.ps1",
+    "setup": "bun scripts/setup.ts",
+    "doctor": "bun scripts/doctor.ts",
+    "export": "bun scripts/export-drawio.ts",
     "mcp": "bun --bun drawio-mcp"
   },
   "dependencies": {

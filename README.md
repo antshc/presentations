@@ -12,22 +12,15 @@ This repository is a reusable workspace for planning and producing editable draw
 
 From the repository root:
 
-```powershell
-.\scripts\setup.ps1
+```sh
+bun run setup
 ```
 
-The setup is safe to run repeatedly. It creates `.draft/`, installs the pinned repository-local dependency with Bun, reports missing system tools, and runs the workspace doctor.
+The setup is safe to run repeatedly. It creates `.draft/`, installs the pinned repository-local dependency with Bun, reports missing system tools, and runs the workspace doctor. All commands are Bun + TypeScript and behave the same in bash (Linux, macOS, WSL, Git Bash) and PowerShell (Windows).
 
 To check the workspace without installing anything:
 
-```powershell
-.\scripts\doctor.ps1
-```
-
-Equivalent Bun commands are available when PowerShell 7 is installed:
-
-```powershell
-bun run setup
+```sh
 bun run doctor
 ```
 
@@ -42,9 +35,15 @@ The following tools are system-level and are not bundled in this repository:
 
 The browser editor at [app.diagrams.net](https://app.diagrams.net/) can open native `.drawio` files without Desktop. Native `.drawio` generation and browser links do not require Desktop.
 
-On Windows, the scripts discover `draw.io.exe` from `PATH`, `%LOCALAPPDATA%\Programs\draw.io`, and `C:\Program Files\draw.io`. Override discovery when needed:
+The scripts find draw.io Desktop from `DRAWIO_EXE`, then `PATH` (`drawio`), then the default install location of the OS (Windows: `%LOCALAPPDATA%\Programs\draw.io` and `C:\Program Files\draw.io`; macOS: `/Applications/draw.io.app`; Linux: `/usr/bin/drawio`). On a headless Linux host, install `xvfb` so export can run through `xvfb-run`. Override discovery when needed:
+
+```sh
+# bash
+export DRAWIO_EXE=/path/to/drawio
+```
 
 ```powershell
+# PowerShell
 $env:DRAWIO_EXE = "C:\path\to\draw.io.exe"
 ```
 
@@ -52,14 +51,14 @@ $env:DRAWIO_EXE = "C:\path\to\draw.io.exe"
 
 Install the official draw.io Codex plugin outside the repository:
 
-```powershell
+```sh
 codex plugin marketplace add jgraph/drawio-mcp
 codex plugin add drawio@drawio
 ```
 
 The repository pins `@drawio/mcp` locally. Start its browser-opening MCP tool server with:
 
-```powershell
+```sh
 bun run mcp
 ```
 
@@ -72,7 +71,7 @@ The same local server is preconfigured for other hosts (run `bun install` first)
 
 Alternatively, register it with Codex globally:
 
-```powershell
+```sh
 codex mcp add drawio -- bunx --bun @drawio/mcp
 ```
 
@@ -133,8 +132,8 @@ The workspace vendors only these Baoyu skills under `.agents/skills/`:
 
 This workspace generates images with the `codex-cli` provider of `baoyu-image-gen`, which uses the logged-in Codex (ChatGPT) subscription and needs no API key. Codex CLI must be installed and logged in (see Prerequisites); verify with `codex --version` and `codex login status`. Pin the provider explicitly, because `codex-cli` is never auto-selected:
 
-```powershell
-bun .agents\skills\baoyu-image-gen\scripts\main.ts --prompt "<prompt>" --image <out.png> --provider codex-cli --ar 16:9
+```sh
+bun .agents/skills/baoyu-image-gen/scripts/main.ts --prompt "<prompt>" --image <out.png> --provider codex-cli --ar 16:9
 ```
 
 Never print or commit credentials, and treat Codex/ChatGPT login and an OpenAI API key as different mechanisms. The `codex-cli` provider launches an unrestricted `danger-full-access` subprocess, so confirm with the user before the first use in a session. Do not make paid API calls solely to verify setup.
@@ -158,19 +157,45 @@ Use the repository-local `retro` skill after a presentation run, or when the wor
 
 ### Default visual profile
 
-Projects may override these defaults in their own `plan.md`.
+Every slide in a deck uses the palette of the selected theme below. Projects choose the theme in their `plan.md` but do not redefine its colors.
 
-| Role | Default | Usage |
-|---|---|---|
-| Paper | `#FAF8F2` | Warm neutral background |
-| Ink | `#222B35` | Titles, labels, outlines, and connectors |
-| Accent 1 | `#64748B` | Slate semantic category |
-| Accent 2 | `#0284C7` | Blue semantic category |
-| Accent 3 | `#D97706` | Amber semantic category |
-| Accent 4 | `#059669` | Green semantic category |
-| Warning | `#EF4444` | Failures, blockers, and caveats only |
+Choose one theme per deck (light is the default) and do not mix light and dark pages. Use only the theme's colors on all slides, main and detail, including diagrams, tables, charts, and comic panels; a concept keeps its Accent and a stage keeps its Stage color on every slide. Authentic third-party logos are the only exception. Colors identify concepts; they are not decoration. Use Kalam (or Patrick Hand) for short headings and Inter for body labels.
 
-Use rough marker-style outlines, sketch-style arrows, high contrast, neutral backgrounds, and sparse accent fills. Colors identify concepts; they are not decoration. Prefer Kalam or Patrick Hand for short headings and Inter or another legible sans-serif for body labels.
+Color roles are separate: **Accent 1–4** mark concepts (outermost to innermost), **Stage 1–4** mark process maturity, and **Warning** marks failures, blockers, and caveats only.
+
+#### Light theme (default)
+
+Rough marker outlines, sketch-style arrows, ink text, sparse tinted fills.
+
+| Role | Stroke / value | Fill | Usage |
+|---|---|---|---|
+| Paper | `#FAF8F2` | | Page background |
+| Surface | `#FFFFFF` | | Panels, bubbles, table body |
+| Ink | `#222B35` | | Titles, outlines, connectors |
+| Text 2 / Muted / Border | `#5B6672` / `#9CA3AF` / `#CBC5B5` | | Secondary text, pill borders, dividers |
+| Accent 1 | `#B4533C` terracotta | `#F6E3DC` | Concept 1 |
+| Accent 2 | `#6B5E4B` stone, dashed | `#FFFDF7` | Concept 2 |
+| Accent 3 | `#2F6F8F` steel blue | `#DCEBF1` | Concept 3 |
+| Accent 4 | `#B8860B` ochre | `#F5E6B8` | Concept 4 |
+| Stage 1–4 | `#64748B` `#0284C7` `#D97706` `#059669` | `#E2E8F0` `#E0F2FE` `#FEF3C7` `#D1FAE5` | Process maturity |
+| Warning | `#EF4444` | `#FDE9E9` | Failures only |
+
+#### Dark theme
+
+Clean vector outlines (no sketch), rounded corners, white text, near-black fills with bright outlines.
+
+| Role | Stroke / value | Fill | Usage |
+|---|---|---|---|
+| Background | `#0B0B0F` | | Page background |
+| Surface | `#111418` | | Cards, panels, bubbles |
+| Ink | `#FFFFFF` | | Titles, text, connectors |
+| Text 2 / Muted / Border | `#D1D5DB` / `#9CA3AF` / `#374151` | | Secondary text, dividers (pill border `#4B5563`) |
+| Accent 1 | `#F0141E` red | Surface | Concept 1 |
+| Accent 2 | `#FFFFFF` white, dashed | Surface | Concept 2 |
+| Accent 3 | `#2D9CFF` blue | Surface | Concept 3 |
+| Accent 4 | `#F5B000` amber | Surface | Concept 4 |
+| Stage 1–4 | `#94A3B8` `#38BDF8` `#FBBF24` `#34D399` | Surface | Process maturity |
+| Warning | `#EF4444` | Surface | Failures only; always add a label (FAIL, ⚠) because Accent 1 is also red |
 
 ### Graphics and resources
 
@@ -183,16 +208,13 @@ Use rough marker-style outlines, sketch-style arrows, high contrast, neutral bac
 
 ## Export diagrams
 
-Export a file or a diagram folder with the wrapper script:
+Export a file or a diagram folder with the wrapper script (the same command works in bash and PowerShell):
 
-```powershell
-.\scripts\export-drawio.ps1 `
-  -Input ".draft/demo/diagrams/slide-01.drawio" `
-  -Format png `
-  -Output ".draft/demo/exports"
+```sh
+bun run export --input .draft/demo/diagrams/slide-01.drawio --format png
 ```
 
-Optional parameters include `-Page`, `-AllPages`, `-Scale`, `-Border`, and `-NoEmbed`. Inputs and outputs must remain under `.draft/`. The script checks that source diagrams are unchanged by export.
+Output goes to `.draft/<project>/exports/` as `<name>-pNN.<format>` (one file per page; PDF is a single file). Optional parameters: `--out <dir>`, `--page <n>` (1-based), `--scale`, `--border`, and `--no-embed`. Inputs and outputs must remain under `.draft/`. The script checks that source diagrams are unchanged by export.
 
 ## Validation and handoff
 
