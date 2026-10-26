@@ -311,6 +311,9 @@ FakesAssemblies/
 .ntvs_analysis.dat
 node_modules/
 
+# Presentation working files (project-specific drafts and generated assets)
+.draft/
+
 # Visual Studio 6 build log
 *.plg
 
