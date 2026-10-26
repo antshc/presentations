@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "drawio": {
+      "type": "local",
+      "command": "bun",
+      "args": ["run", "--silent", "mcp"],
+      "tools": ["*"]
+    }
+  }
+}

@@ -16,6 +16,7 @@ Inspect the repository and the selected project folder before asking questions. 
 - `AGENT.md`, `README.md`, `USAGE.md`, `PROMPTS.md` for objective, visual system, authoring rules, and approval constraints;
 - `.draft/<project-name>/plan.md`, if present, plus `sources/`, `images/`, `references/`, `diagrams/`, and existing `.drawio` files;
 - `.gitignore`, `templates/presentation-plan.md`, and available skills in `.agents/skills/` and tools in `scripts/` and `package.json`;
+- whether the `drawio` MCP server is available (`.vscode/mcp.json`, `.mcp.json`); prefer it over hand-written XML or desktop tooling when the plan calls for diagram previews or prototypes;
 - linked source plans or research the user mentions (read them; do not ask the user to summarize them).
 
 Resolve these inputs:
@@ -144,4 +145,5 @@ Maintained through the `retro` skill. One line each: `symptom -> cause -> what t
 - Answers captured only in chat -> `plan.md` not edited after the answer -> edit `plan.md` in the same turn, then ask the next question.
 - Several questions in one message -> batching -> ask one question at a time.
 - Session closed because questions ran out -> model ended it -> only the user ends the session; ask to close and wait.
+- Diagram generation planned around draw.io Desktop only -> MCP overlooked -> record in `plan.md` that generation should use the `drawio` MCP tools, with Desktop as fallback and for exports.
 - Assets missing on a fresh clone -> `sources/`, `images/`, `video/`, `references/`, `exports/`, and `notes/` are ignored by Git -> record each asset's origin in `plan.md` so it can be re-obtained.

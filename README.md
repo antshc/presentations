@@ -63,6 +63,13 @@ The repository pins `@drawio/mcp` locally. Start its browser-opening MCP tool se
 bun run mcp
 ```
 
+The same local server is preconfigured for other hosts (run `bun install` first):
+
+| Host | Config |
+|---|---|
+| VS Code (GitHub Copilot) | [.vscode/mcp.json](.vscode/mcp.json) — start the `drawio` server from the MCP Servers view |
+| GitHub Copilot CLI | [.mcp.json](.mcp.json) — run `copilot` from the repo root and check `/mcp` |
+
 Alternatively, register it with Codex globally:
 
 ```powershell

@@ -13,7 +13,8 @@ Do not replace the presentation with rasterized slides or an image-based PowerPo
 
 | Capability | Use |
 |---|---|
-| draw.io Desktop 32.6.1 | Create, open, validate, and export editable `.drawio` slides. |
+| draw.io MCP (`drawio` server, `.vscode/mcp.json`, `.mcp.json`) | Preferred for creating, previewing, and reading diagrams: `open_drawio_xml`, `open_drawio_mermaid`, `search_shapes`, `get_drawio_reference`, `list_pages`, `get_page`, `set_page`. |
+| draw.io Desktop 32.6.1 | Fallback for opening, validating, and exporting editable `.drawio` slides when the MCP server is unavailable or cannot do the step (e.g. PNG/SVG/PDF export via `scripts/export-drawio.ps1`). |
 | Node.js, npm, npx | Run supporting JavaScript tooling. |
 | Bun | Execute Baoyu TypeScript scripts. |
 | Codex CLI/Desktop | Coordinate research, generation, file creation, and validation. |
@@ -52,9 +53,9 @@ Do not replace the presentation with rasterized slides or an image-based PowerPo
 3. Draft Webtoon illustration prompts using `baoyu-comic` with a widescreen composition.
 4. Apply `baoyu-xhs-images` concepts with `--style notion` to layout decisions.
 5. Generate only required illustrations through native Codex `imagegen`.
-6. Assemble editable slide pages in one `.drawio` file.
+6. Assemble editable slide pages in one `.drawio` file. Prefer the draw.io MCP: call `get_drawio_reference` (format `xml`) once, prototype each slide with `open_drawio_xml` (or `open_drawio_mermaid` for flowcharts), inspect the file with `list_pages`/`get_page`, and write approved XML into an existing page with `set_page` (it cannot add pages, so add empty `<diagram>` pages to the `.drawio` file first). Edit the file directly only when the MCP server is unavailable.
 7. Validate XML, page count, text editability, connectors, stage colors, and embedded assets.
-8. Open and export with draw.io Desktop for visual QA.
+8. Preview with the draw.io MCP; use draw.io Desktop and `scripts/export-drawio.ps1` for final visual QA and exports.
 
 ## Example invocations
 

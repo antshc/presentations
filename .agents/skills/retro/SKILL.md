@@ -21,7 +21,7 @@ Use only observable evidence. Never invent problems or quote events that did not
 - Session history: query `session_store_sql` (time-bound, filtered by this repository) for user corrections, repeated questions, retried tool calls, failures, and abandoned approaches.
 - Project files: `plan.md` (unresolved decisions, `needs review` resources, assumptions), `diagrams/`, `exports/`, `notes/`.
 - Repository state: `git --no-pager log` and `git --no-pager status` for churn, reverted work, and uncommitted assets.
-- Tooling: run `scripts/doctor.ps1` and inspect failures of `scripts/export-drawio.ps1` or `scripts/setup.ps1`.
+- Tooling: run `scripts/doctor.ps1` and inspect failures of `scripts/export-drawio.ps1` or `scripts/setup.ps1`; check whether the `drawio` MCP server (`.vscode/mcp.json`, `.mcp.json`) was used or skipped in favor of manual XML or desktop tooling.
 - Current skills, templates, and README, to see whether guidance already exists but was ignored or is wrong.
 
 ## Detect and classify

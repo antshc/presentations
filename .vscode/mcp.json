@@ -1,0 +1,10 @@
+{
+  "servers": {
+    "drawio": {
+      "type": "stdio",
+      "command": "bun",
+      "args": ["run", "--silent", "mcp"],
+      "cwd": "${workspaceFolder}"
+    }
+  }
+}
