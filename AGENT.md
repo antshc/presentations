@@ -23,8 +23,9 @@ All repository tooling is Bun + TypeScript, so every command is identical in bas
 
 | Capability | Use |
 |---|---|
-| draw.io MCP (`drawio` server, `.vscode/mcp.json`, `.mcp.json`) | Preferred for creating, previewing, and reading diagrams: `open_drawio_xml`, `open_drawio_mermaid`, `search_shapes`, `get_drawio_reference`, `list_pages`, `get_page`, `set_page`. |
-| draw.io Desktop | Fallback for opening, validating, and exporting editable `.drawio` slides when the MCP server is unavailable or cannot do the step (PNG/SVG/PDF export via `bun run export`). |
+| `drawing` skill | Write, update and verify one `.drawio` slide page from its plan row; uses the draw.io MCP and `bun run export`. |
+| draw.io MCP (`drawio` server, `.vscode/mcp.json`, `.mcp.json`) | Creating, previewing, and reading diagrams: `open_drawio_xml`, `open_drawio_mermaid`, `search_shapes`, `get_drawio_reference`, `list_pages`, `get_page`, `set_page`. Driven by the `drawing` skill. |
+| draw.io Desktop | Export and QA through `bun run export` (PNG/SVG/PDF); fallback for opening and validating when the MCP server cannot do the step. |
 | Node.js, npm, npx | Run supporting JavaScript tooling. |
 | Bun + TypeScript | Run every repository script (`scripts/*.ts`) and the Baoyu TypeScript scripts. |
 | Codex CLI/Desktop | Coordinate research, generation, file creation, and validation. |
@@ -54,6 +55,7 @@ All repository tooling is Bun + TypeScript, so every command is identical in bas
 ### Dark theme
 
 - Rendering: clean vector (no sketch), `arcSize=12`, stroke 3 (rings 5), white text, near-black surface fills with bright outlines.
+- Set `adaptiveColors="none"` on `mxGraphModel`, or draw.io's dark UI inverts the white text to dark.
 - Background `#0B0B0F`, Surface `#111418`, Ink `#FFFFFF`, Text 2 `#D1D5DB`, Muted `#9CA3AF`, Border `#374151`, pill border `#4B5563`.
 - Accent 1–4 (stroke, fill `#111418`): red `#F0141E`; white dashed `#FFFFFF`; blue `#2D9CFF`; amber `#F5B000`.
 - Stage 1–4 stroke: slate `#94A3B8`; sky `#38BDF8`; amber `#FBBF24`; green `#34D399`.
@@ -78,19 +80,11 @@ All repository tooling is Bun + TypeScript, so every command is identical in bas
 3. Draft Webtoon illustration prompts using `baoyu-comic` with a widescreen composition.
 4. Apply `baoyu-xhs-images` concepts with `--style notion` to layout decisions.
 5. Generate only required illustrations through native Codex `imagegen`.
-6. Assemble editable slide pages in a `.drawio` file under `.draft/<project>/diagrams/`. For a single page, prefer the draw.io MCP: call `get_drawio_reference` (format `xml`) once, prototype with `open_drawio_xml` (or `open_drawio_mermaid` for flowcharts), inspect with `list_pages`/`get_page`, and write approved XML into an existing page with `set_page` (it cannot add pages, so add empty `<diagram>` pages to the file first). For multi-page or repeated layouts, a TypeScript generator run with Bun that writes valid native `.drawio` is allowed; keep it under `.draft/<project>/` (ignored) and treat the `.drawio` as the source of truth.
-7. Validate XML, page count, text editability, connectors, stage colors, and embedded assets.
-8. Preview with the draw.io MCP; use draw.io Desktop and `bun run export` for final visual QA and exports, then view the PNGs.
+6. Write or update each slide page, then verify and export it, with the `drawing` skill (`.agents/skills/drawing/SKILL.md`). It owns the draw.io MCP workflow, static checks, `bun run export` QA, slide-notes sync and the draw.io gotchas. For multi-page or repeated layouts, a TypeScript generator run with Bun that writes valid native `.drawio` is allowed; keep it under `.draft/<project>/` (ignored), treat the `.drawio` as the source of truth, and still verify each page with the skill.
 
 ## Gotchas
 
-- Text renders in a serif in exports -> Kalam and Inter are web fonts that draw.io Desktop does not have offline -> check the look in the browser editor or install the fonts before final export.
-- Speech bubble renders as a plain box or with a bent tail -> `wedgeRoundRectCallout` and `mxgraph.basic.roundRectCallout` render poorly in export -> use `shape=callout;perimeter=calloutPerimeter` with `base`, `size`, `position`, `position2`, and add the tail `size` to the shape height.
-- Edge label is tiny or in the wrong font -> labels do not inherit shape styles -> set `fontSize`, `fontFamily`, `fontColor` and `labelBackgroundColor` on the edge.
-- Sketch shapes look hatched -> default sketch `fillStyle` is hachure -> add `fillStyle=solid`.
-- `set_page` fails for a new page -> it cannot add pages -> add empty `<diagram>` elements to the file first, or write the file directly.
-- Generated `.drawio` is not tracked or is missing from doctor checks -> it sits outside `diagrams/` (`.draft/*/*` is ignored) -> save sources in `.draft/<project>/diagrams/`; `bun run doctor` warns about strays.
-- Python `%` formatting or shell heredocs break on URL-encoded font strings and PowerShell -> use TypeScript with template strings, and create files with the editor tools instead of shell redirection.
+Draw.io authoring gotchas (fonts in exports, callouts, edge labels, `fillStyle=solid`, `set_page` limits, file placement, shell quoting) live in the `drawing` skill's Gotchas section.
 
 ## Example invocations
 
