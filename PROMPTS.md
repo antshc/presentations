@@ -5,7 +5,7 @@ Replace values in angle brackets before sending a prompt to Codex.
 ## Plan a new presentation
 
 ```text
-Use the local presentation-planning skill.
+Use the local planning skill.
 
 Project name: <kebab-case-name>
 Topic: <topic>

@@ -51,5 +51,7 @@ Each row is one slide unit made from two adjacent 16:9 screens. The left screen 
 - [ ] Every external claim and asset has a traceable resource.
 - [ ] Resource status, attribution, and license are recorded.
 - [ ] Accessibility and branding constraints are actionable.
+- [ ] Every question is answered and reflected in the plan.
+- [ ] The user confirmed ending the planning session.
 - [ ] Unresolved decisions are visible.
 - [ ] The plan is ready for draw.io generation.

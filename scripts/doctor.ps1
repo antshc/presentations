@@ -99,9 +99,9 @@ try {
     $mcpPackage = Join-Path $repoRoot 'node_modules\@drawio\mcp\package.json'
     Write-Check (Test-Path -LiteralPath $mcpPackage -PathType Leaf) 'The pinned @drawio/mcp package is installed locally.'
 
-    $skillPath = Join-Path $repoRoot '.agents\skills\presentation-planning\SKILL.md'
-    $templatePath = Join-Path $repoRoot '.agents\skills\presentation-planning\templates\presentation-plan.md'
-    Write-Check (Test-Path -LiteralPath $skillPath -PathType Leaf) 'The presentation-planning skill is present.'
+    $skillPath = Join-Path $repoRoot '.agents\skills\planning\SKILL.md'
+    $templatePath = Join-Path $repoRoot '.agents\skills\planning\templates\presentation-plan.md'
+    Write-Check (Test-Path -LiteralPath $skillPath -PathType Leaf) 'The planning skill is present.'
     Write-Check (Test-Path -LiteralPath $templatePath -PathType Leaf) 'The presentation plan template is present.'
 
     $baoyuSkillFiles = [ordered]@{

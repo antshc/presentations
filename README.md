@@ -37,7 +37,7 @@ The following tools are system-level and are not bundled in this repository:
 
 - Node.js LTS with npm and npx, used for skill management and compatibility tooling.
 - [Bun](https://bun.sh/) 1.1 or later.
-- Codex CLI or the Codex desktop application.
+- Codex CLI (required; the `codex` command must be on `PATH`). Install with `npm i -g @openai/codex@latest`, then run `codex login` and sign in with ChatGPT. The Codex desktop application alone is not sufficient for image generation.
 - [draw.io Desktop](https://github.com/jgraph/drawio-desktop/releases) for automatic layout and PNG, SVG, or PDF export.
 
 The browser editor at [app.diagrams.net](https://app.diagrams.net/) can open native `.drawio` files without Desktop. Native `.drawio` generation and browser links do not require Desktop.
@@ -101,7 +101,7 @@ Do not place reusable skills, templates, or repository tooling there. Do not sto
 
 ## Planning skill
 
-Use the repository-local `presentation-planning` skill when starting or revising a presentation. It interviews the user, inspects existing project assets, creates the project structure, and writes `.draft/<project-name>/plan.md` from the tracked template.
+Use the repository-local `planning` skill when starting or revising a presentation. It interviews the user, inspects existing project assets, creates the project structure, and writes `.draft/<project-name>/plan.md` from the tracked template.
 
 The plan uses one row per slide unit and three columns:
 
@@ -124,7 +124,13 @@ The workspace vendors only these Baoyu skills under `.agents/skills/`:
 - `baoyu-xhs-images` for clean `notion`-style composition;
 - `baoyu-image-gen` as an optional provider-based image backend.
 
-Use the AI client's native image-generation capability when available. Otherwise, select a supported Baoyu provider and ask for any required provider choice or credentials. Never print or commit credentials, treat Codex/ChatGPT login and an OpenAI API key as different mechanisms, and do not use the `codex-cli` provider without explicit approval because it launches an unrestricted `danger-full-access` subprocess. Do not make paid API calls solely to verify setup.
+This workspace generates images with the `codex-cli` provider of `baoyu-image-gen`, which uses the logged-in Codex (ChatGPT) subscription and needs no API key. Codex CLI must be installed and logged in (see Prerequisites); verify with `codex --version` and `codex login status`. Pin the provider explicitly, because `codex-cli` is never auto-selected:
+
+```powershell
+bun .agents\skills\baoyu-image-gen\scripts\main.ts --prompt "<prompt>" --image <out.png> --provider codex-cli --ar 16:9
+```
+
+Never print or commit credentials, and treat Codex/ChatGPT login and an OpenAI API key as different mechanisms. The `codex-cli` provider launches an unrestricted `danger-full-access` subprocess, so confirm with the user before the first use in a session. Do not make paid API calls solely to verify setup.
 
 For a Webtoon + Notion presentation, use comic imagery only for illustrations; keep slide text, connectors, diagrams, tables, and charts editable in draw.io. Save prompts and generated images inside the applicable `.draft/<project-name>/` folders. The vendored versions are recorded in `skills-lock.json`.
 

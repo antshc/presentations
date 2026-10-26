@@ -18,12 +18,12 @@ codex
 
 ## 2. Create a presentation plan
 
-Give Codex the topic, audience, source material, slide count, visual style, and output name. Ask it to use the local `presentation-planning` skill.
+Give Codex the topic, audience, source material, slide count, visual style, and output name. Ask it to use the local `planning` skill.
 
 Example:
 
 ```text
-Use the local presentation-planning skill to plan a seven-slide presentation.
+Use the local planning skill to plan a seven-slide presentation.
 
 Topic: AI development evolution
 Audience: software engineers and technical leaders
