@@ -1,6 +1,6 @@
 # Presentation Crafting Workspace
 
-This repository is a reusable workspace for planning and producing editable draw.io presentations with AI assistance. Shared instructions, skills, templates, and tooling are tracked. Project-specific research, assets, diagrams, and exports live under `.draft/` and are ignored by Git.
+This repository is a reusable workspace for planning and producing editable draw.io presentations with AI assistance. Shared instructions, skills, templates, and tooling are tracked. Each project's `plan.md` and native `.drawio` diagrams under `.draft/` are tracked too. Project assets (sources, images, video, references, exports, and notes) live under `.draft/` and are ignored by Git.
 
 ## Quick start
 
@@ -81,7 +81,16 @@ Create one folder per presentation. The planning skill can create this structure
     notes/
 ```
 
-`.draft/` is intentionally ignored. Do not place reusable skills, templates, or repository tooling there. Do not store secrets or unlicensed assets in draft folders.
+`.draft/` holds the project content, but only part of it is committed:
+
+| Path | Git |
+|---|---|
+| `plan.md` | tracked |
+| `diagrams/*.drawio` (native source diagrams) | tracked |
+| `sources/`, `images/`, `video/`, `references/`, `exports/`, `notes/` | ignored |
+| Non-`.drawio` files in `diagrams/` (previews, temp files) | ignored |
+
+Do not place reusable skills, templates, or repository tooling there. Do not store secrets or unlicensed assets in draft folders; they are not committed, so `plan.md` must record where each asset comes from so it can be re-fetched.
 
 ## Planning skill
 
@@ -100,6 +109,10 @@ Each row becomes two adjacent 16:9 draw.io screens:
 
 Planning does not create final diagrams unless the user explicitly requests generation after approving the plan.
 
+## Retro skill
+
+Use the repository-local `retro` skill after a presentation run, or when the workflow felt slow or error-prone. It reviews session history, the project folder, repository state, and tooling output, then reports issues with root causes and reasoned improvement proposals, including gotchas to document. It writes the report to `.draft/<project-name>/notes/` and edits skills, templates, scripts, or docs only after you approve the changes.
+
 ## Draw.io authoring rules
 
 - Treat native `.drawio` XML as the source of truth.
@@ -108,7 +121,7 @@ Planning does not create final diagrams unless the user explicitly requests gene
 - Use wide margins, one dominant visual per screen, and short audience-facing labels.
 - Put supporting detail on the right screen instead of shrinking or overcrowding the main screen.
 - Keep connectors away from text and make the left-to-right relationship obvious.
-- Store source diagrams in `.draft/<project-name>/diagrams/` and generated files in `.draft/<project-name>/exports/`.
+- Store source diagrams (committed) in `.draft/<project-name>/diagrams/` and generated files (ignored) in `.draft/<project-name>/exports/`.
 - Preserve editable diagram data in exports whenever the format supports it.
 
 ### Default visual profile

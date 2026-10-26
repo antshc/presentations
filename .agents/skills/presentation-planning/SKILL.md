@@ -39,6 +39,13 @@ notes/
 
 Inspect and reuse existing files. Never overwrite a populated `plan.md` without incorporating its useful content. Copy `templates/presentation-plan.md` as the starting structure for a new plan.
 
+Git handling inside `.draft/<project-name>/`:
+
+- Committed: `plan.md` and the native `.drawio` files in `diagrams/`.
+- Ignored (assets): `sources/`, `images/`, `video/`, `references/`, `exports/`, `notes/`, and any non-`.drawio` file in `diagrams/`.
+
+Because assets are not committed, record in `plan.md` the origin URL or location of every asset so it can be re-obtained. Never put secrets or unlicensed material in the asset folders.
+
 ## Build the plan
 
 One table row represents one slide unit with two adjacent 16:9 screens:
@@ -69,3 +76,9 @@ Record assumptions, unresolved decisions, project-specific style overrides, and 
 - unresolved decisions that block generation.
 
 Do not create final `.drawio` files or exported graphics during planning unless the user explicitly requests generation after reviewing the plan.
+
+## Gotchas
+
+Maintained through the `retro` skill. One line each: `symptom -> cause -> what to do`.
+
+- Assets missing on a fresh clone -> `sources/`, `images/`, `video/`, `references/`, `exports/`, and `notes/` are ignored by Git -> record each asset's origin in `plan.md` so it can be re-obtained.
