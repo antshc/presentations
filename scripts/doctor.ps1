@@ -62,18 +62,12 @@ function Find-DrawioExecutable {
 
 Push-Location $repoRoot
 try {
-    $node = Get-Command node -ErrorAction SilentlyContinue
-    Write-Check ([bool]$node) 'Node.js is available.'
-    if ($node) {
-        $nodeVersionText = (& node --version).Trim().TrimStart('v')
-        $nodeVersion = [version]$nodeVersionText
-        Write-Check ($nodeVersion.Major -ge 18) "Node.js $nodeVersionText satisfies the >=18 requirement."
-    }
-
-    $npm = Get-Command npm -ErrorAction SilentlyContinue
-    Write-Check ([bool]$npm) 'npm is available.'
-    if ($npm) {
-        Write-Host "       npm $((& npm --version).Trim())"
+    $bun = Get-Command bun -ErrorAction SilentlyContinue
+    Write-Check ([bool]$bun) 'Bun is available.'
+    if ($bun) {
+        $bunVersionText = (& bun --version).Trim()
+        $bunVersion = [version]($bunVersionText -replace '[-+].*$', '')
+        Write-Check ($bunVersion -ge [version]'1.1') "Bun $bunVersionText satisfies the >=1.1 requirement."
     }
 
     $codex = Get-Command codex -ErrorAction SilentlyContinue
@@ -92,6 +86,26 @@ try {
     $templatePath = Join-Path $repoRoot '.agents\skills\presentation-planning\templates\presentation-plan.md'
     Write-Check (Test-Path -LiteralPath $skillPath -PathType Leaf) 'The presentation-planning skill is present.'
     Write-Check (Test-Path -LiteralPath $templatePath -PathType Leaf) 'The presentation plan template is present.'
+
+    $baoyuSkillFiles = [ordered]@{
+        'baoyu-comic' = @('SKILL.md', 'references\base-prompt.md', 'scripts\main.ts')
+        'baoyu-xhs-images' = @('SKILL.md', 'references\elements\canvas.md')
+        'baoyu-image-gen' = @('SKILL.md', 'scripts\main.ts', 'references\usage-examples.md')
+    }
+    foreach ($skillName in $baoyuSkillFiles.Keys) {
+        $skillRoot = Join-Path $repoRoot ".agents\skills\$skillName"
+        $missingFiles = @(
+            $baoyuSkillFiles[$skillName] |
+                Where-Object { -not (Test-Path -LiteralPath (Join-Path $skillRoot $_) -PathType Leaf) }
+        )
+        Write-Check ($missingFiles.Count -eq 0) "$skillName and its required supporting files are present."
+        if ($missingFiles.Count -gt 0) {
+            Write-Host "       Missing: $($missingFiles -join ', ')"
+        }
+    }
+
+    $skillsLockPath = Join-Path $repoRoot 'skills-lock.json'
+    Write-Check (Test-Path -LiteralPath $skillsLockPath -PathType Leaf) 'The project-local skill lock is present.'
 
     $draftPath = Join-Path $repoRoot '.draft'
     Write-Check (Test-Path -LiteralPath $draftPath -PathType Container) 'The .draft workspace exists.'

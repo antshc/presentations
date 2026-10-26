@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "skills": {
+    "baoyu-comic": {
+      "source": "JimLiu/baoyu-skills",
+      "sourceType": "github",
+      "skillPath": "skills/baoyu-comic/SKILL.md",
+      "computedHash": "594cd1430487a7a295297fcf5bbab6a889fc5a751d89a088ae058b79274de8d3"
+    },
+    "baoyu-image-gen": {
+      "source": "JimLiu/baoyu-skills",
+      "sourceType": "github",
+      "skillPath": "skills/baoyu-image-gen/SKILL.md",
+      "computedHash": "f93651ad9a736afdee73fbffcf9519b7886cd29aa8fff1cdedb35c16dd574eb4"
+    },
+    "baoyu-xhs-images": {
+      "source": "JimLiu/baoyu-skills",
+      "sourceType": "github",
+      "skillPath": "skills/baoyu-xhs-images/SKILL.md",
+      "computedHash": "4c2d671e036f43f6338b6320095db4c4e44b6d948097ad2f2b27c61eff71ef86"
+    }
+  }
+}

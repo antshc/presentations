@@ -3,13 +3,14 @@
   "version": "1.0.0",
   "private": true,
   "description": "Local tooling for AI-assisted, editable draw.io presentations.",
+  "packageManager": "bun@1.4.4",
   "engines": {
-    "node": ">=18"
+    "bun": ">=1.1"
   },
   "scripts": {
     "setup": "pwsh -NoProfile -File ./scripts/setup.ps1",
     "doctor": "pwsh -NoProfile -File ./scripts/doctor.ps1",
-    "mcp": "drawio-mcp"
+    "mcp": "bun --bun drawio-mcp"
   },
   "dependencies": {
     "@drawio/mcp": "1.10.0"

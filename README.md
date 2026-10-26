@@ -2,6 +2,12 @@
 
 This repository is a reusable workspace for planning and producing editable draw.io presentations with AI assistance. Shared instructions, skills, templates, and tooling are tracked. Each project's `plan.md` and native `.drawio` diagrams under `.draft/` are tracked too. Project assets (sources, images, video, references, exports, and notes) live under `.draft/` and are ignored by Git.
 
+## User guides
+
+- [Presentation generation guide](USAGE.md)
+- [Copy-paste prompt examples](PROMPTS.md)
+- [AI presentation capabilities and rules](AGENT.md)
+
 ## Quick start
 
 From the repository root:
@@ -10,7 +16,7 @@ From the repository root:
 .\scripts\setup.ps1
 ```
 
-The setup is safe to run repeatedly. It creates `.draft/`, installs the pinned repository-local Node.js dependency, reports missing system tools, and runs the workspace doctor.
+The setup is safe to run repeatedly. It creates `.draft/`, installs the pinned repository-local dependency with Bun, reports missing system tools, and runs the workspace doctor.
 
 To check the workspace without installing anything:
 
@@ -18,18 +24,18 @@ To check the workspace without installing anything:
 .\scripts\doctor.ps1
 ```
 
-Equivalent npm commands are available when PowerShell 7 is installed:
+Equivalent Bun commands are available when PowerShell 7 is installed:
 
 ```powershell
-npm run setup
-npm run doctor
+bun run setup
+bun run doctor
 ```
 
 ## Prerequisites
 
 The following tools are system-level and are not bundled in this repository:
 
-- Node.js 18 or later with npm.
+- [Bun](https://bun.sh/) 1.1 or later.
 - Codex CLI or the Codex desktop application.
 - [draw.io Desktop](https://github.com/jgraph/drawio-desktop/releases) for automatic layout and PNG, SVG, or PDF export.
 
@@ -53,13 +59,13 @@ codex plugin add drawio@drawio
 The repository pins `@drawio/mcp` locally. Start its browser-opening MCP tool server with:
 
 ```powershell
-npm run mcp
+bun run mcp
 ```
 
 Alternatively, register it with Codex globally:
 
 ```powershell
-codex mcp add drawio -- npx -y @drawio/mcp
+codex mcp add drawio -- bunx --bun @drawio/mcp
 ```
 
 See the [official draw.io AI assistant documentation](https://www.drawio.com/docs/manual/generate/drawio-mcp-server/) for integration behavior.
@@ -108,6 +114,18 @@ Each row becomes two adjacent 16:9 draw.io screens:
 - Right: horizontally adjacent explanation, evidence, real imagery, or a more detailed diagram.
 
 Planning does not create final diagrams unless the user explicitly requests generation after approving the plan.
+
+## Illustration skills
+
+The workspace vendors only these Baoyu skills under `.agents/skills/`:
+
+- `baoyu-comic` for Webtoon-style storyboards, characters, panels, and prompts;
+- `baoyu-xhs-images` for clean `notion`-style composition;
+- `baoyu-image-gen` as an optional provider-based image backend.
+
+Use the AI client's native image-generation capability when available. Otherwise, select a supported Baoyu provider and ask for any required provider choice or credentials. Never print or commit credentials, treat Codex/ChatGPT login and an OpenAI API key as different mechanisms, and do not use the `codex-cli` provider without explicit approval because it launches an unrestricted `danger-full-access` subprocess. Do not make paid API calls solely to verify setup.
+
+For a Webtoon + Notion presentation, use comic imagery only for illustrations; keep slide text, connectors, diagrams, tables, and charts editable in draw.io. Save prompts and generated images inside the applicable `.draft/<project-name>/` folders. The vendored versions are recorded in `skills-lock.json`.
 
 ## Retro skill
 

@@ -17,24 +17,18 @@ try {
         Write-Host '.draft workspace already exists.'
     }
 
-    $node = Get-Command node -ErrorAction SilentlyContinue
-    $npm = Get-Command npm -ErrorAction SilentlyContinue
-    if (-not $node -or -not $npm) {
-        throw 'Node.js 18+ and npm are required. Install them from https://nodejs.org/ and rerun setup.'
+    $bun = Get-Command bun -ErrorAction SilentlyContinue
+    if (-not $bun) {
+        throw 'Bun is required. Install it from https://bun.sh/ and rerun setup.'
     }
 
-    $nodeVersion = [version]((& node --version).Trim().TrimStart('v'))
-    if ($nodeVersion.Major -lt 18) {
-        throw "Node.js 18+ is required; found $nodeVersion."
-    }
-
-    if (Test-Path -LiteralPath (Join-Path $repoRoot 'package-lock.json') -PathType Leaf) {
-        & npm ci
+    if (Test-Path -LiteralPath (Join-Path $repoRoot 'bun.lock') -PathType Leaf) {
+        & bun install --frozen-lockfile
     } else {
-        & npm install
+        & bun install
     }
     if ($LASTEXITCODE -ne 0) {
-        throw "npm dependency installation failed with exit code $LASTEXITCODE."
+        throw "Bun dependency installation failed with exit code $LASTEXITCODE."
     }
 
     if (-not (Get-Command codex -ErrorAction SilentlyContinue)) {
