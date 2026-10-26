@@ -35,6 +35,7 @@ bun run doctor
 
 The following tools are system-level and are not bundled in this repository:
 
+- Node.js LTS with npm and npx, used for skill management and compatibility tooling.
 - [Bun](https://bun.sh/) 1.1 or later.
 - Codex CLI or the Codex desktop application.
 - [draw.io Desktop](https://github.com/jgraph/drawio-desktop/releases) for automatic layout and PNG, SVG, or PDF export.

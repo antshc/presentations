@@ -17,6 +17,12 @@ try {
         Write-Host '.draft workspace already exists.'
     }
 
+    foreach ($commandName in @('node', 'npm', 'npx')) {
+        if (-not (Get-Command $commandName -ErrorAction SilentlyContinue)) {
+            throw "$commandName is required. Install Node.js LTS from https://nodejs.org/ and rerun setup."
+        }
+    }
+
     $bun = Get-Command bun -ErrorAction SilentlyContinue
     if (-not $bun) {
         throw 'Bun is required. Install it from https://bun.sh/ and rerun setup.'

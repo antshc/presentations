@@ -62,6 +62,23 @@ function Find-DrawioExecutable {
 
 Push-Location $repoRoot
 try {
+    $node = Get-Command node -ErrorAction SilentlyContinue
+    Write-Check ([bool]$node) 'Node.js is available.'
+    if ($node) {
+        $nodeVersionText = (& node --version).Trim()
+        $nodeLtsName = (& node -p "process.release.lts || ''").Trim()
+        Write-Check ([bool]$nodeLtsName) "Node.js $nodeVersionText is an LTS release."
+    }
+
+    foreach ($commandName in @('npm', 'npx')) {
+        $command = Get-Command $commandName -ErrorAction SilentlyContinue
+        Write-Check ([bool]$command) "$commandName is available."
+        if ($command) {
+            $commandVersion = (& $commandName --version).Trim()
+            Write-Host "       $commandName $commandVersion"
+        }
+    }
+
     $bun = Get-Command bun -ErrorAction SilentlyContinue
     Write-Check ([bool]$bun) 'Bun is available.'
     if ($bun) {
@@ -88,7 +105,7 @@ try {
     Write-Check (Test-Path -LiteralPath $templatePath -PathType Leaf) 'The presentation plan template is present.'
 
     $baoyuSkillFiles = [ordered]@{
-        'baoyu-comic' = @('SKILL.md', 'references\base-prompt.md', 'scripts\main.ts')
+        'baoyu-comic' = @('SKILL.md', 'references\base-prompt.md', 'scripts\merge-to-pdf.ts')
         'baoyu-xhs-images' = @('SKILL.md', 'references\elements\canvas.md')
         'baoyu-image-gen' = @('SKILL.md', 'scripts\main.ts', 'references\usage-examples.md')
     }
